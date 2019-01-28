@@ -77,7 +77,7 @@ public class CleanerT implements Runnable
 			}
 		}		
 		
-		/*
+		
 		// Move all oldFiles to OLD folder
 		oldFiles.stream().forEach(file -> {
 			try 
@@ -92,7 +92,7 @@ public class CleanerT implements Runnable
 			{
 				e.printStackTrace();
 			}
-		});*/	
+		});
 		System.out.println("Thread finished in: " + path);
 	}
 }

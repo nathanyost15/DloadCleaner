@@ -44,8 +44,6 @@ public class CleanerT implements Runnable
 				oldFiles.add(path + "\\" + file.getName());				
 			}
 		});
-		
-		oldFiles.stream().forEach(file -> System.out.println(file));
 		// Search for files that are 30 days old
 		
 		/*File downloadFile = new File(path);

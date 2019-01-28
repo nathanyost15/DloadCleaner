@@ -18,7 +18,8 @@ public class Driver
 				"D:\\Downloads"
 		};
 		Cleaner cleaner = new Cleaner();
-		Arrays.stream(paths).forEach( path -> cleaner.add(path) );
+		//Arrays.stream(paths).forEach( path -> cleaner.add(path) );
+		cleaner.add(paths[1]);
 		cleaner.clean(30);
 	}
 }

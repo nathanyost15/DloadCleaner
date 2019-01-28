@@ -1,6 +1,10 @@
 package com.nathan.cleaner;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,11 +28,25 @@ public class CleanerT implements Runnable
 	{	
 		System.out.println("Thread is running in: " + path);
 		// Get list of all files in path.
-		File[] files = new File(path).listFiles();
+		List<File> files = new ArrayList<File>(Arrays.asList((new File(path)).listFiles()));
 		
-		List<String> oldFiles = new ArrayList<String>();
 		
-		Arrays.stream(files).forEach( file -> {
+		// Check if OLD file is found		
+		boolean oldFileFound = files.contains(new File("OLD"));
+		for(File f : files)
+		{
+			if(f.getName().equalsIgnoreCase("OLD"))
+			{
+				oldFileFound = true;
+				files.remove(f);
+				return;
+			}
+		}
+		
+		// Search for files that are 30 days old
+		
+		List<String> oldFiles = new ArrayList<String>();		
+		files.stream().forEach( file -> {			
 			SimpleDateFormat format = new SimpleDateFormat("D");
 			int fileLastModified = Integer.parseInt(format.format(new Date(file.lastModified()))),
 					currentDate = Integer.parseInt(format.format(date));
@@ -43,14 +61,36 @@ public class CleanerT implements Runnable
 			{
 				oldFiles.add(path + "\\" + file.getName());				
 			}
-		});
-		// Search for files that are 30 days old
+		});	
 		
-		/*File downloadFile = new File(path);
-		
-		Arrays.stream(downloadFile.listFiles()).forEach(file -> {
-			DateFormat format = new SimpleDateFormat("D");			
-			System.out.println(file.getName() + "\t" + format.format(new Date(file.lastModified())));		
-		});*/
+		if(!oldFileFound)
+		{			
+			try
+			{
+				Files.createDirectory(Paths.get(path + "\\OLD"));
+			} catch(IOException e)
+			{
+				System.err.println(e.getMessage());
+				System.exit(-1);
+			}
+		}		
+		/*
+		System.out.println("line 80");
+		// Move all oldFiles to OLD folder
+		oldFiles.stream().forEach(file -> {
+			try 
+			{
+				Path p = Files.move(Paths.get(file), Paths.get(path + "\\OLD"), StandardCopyOption.REPLACE_EXISTING);
+				if(p == null)
+				{
+					System.err.println("Problems with moving: " + file);
+				}
+				
+			} catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		});	
+		System.out.println("line 96");*/
 	}
 }

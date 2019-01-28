@@ -2,9 +2,10 @@ package com.nathan.cleaner;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,35 +34,36 @@ public class CleanerT implements Runnable
 		
 		// Check if OLD file is found		
 		boolean oldFileFound = files.contains(new File("OLD"));
+		
 		for(File f : files)
 		{
 			if(f.getName().equalsIgnoreCase("OLD"))
 			{
 				oldFileFound = true;
 				files.remove(f);
-				return;
-			}
+				break;
+			}			
 		}
 		
 		// Search for files that are 30 days old
-		
-		List<String> oldFiles = new ArrayList<String>();		
+		List<OldFile> oldFiles = new ArrayList<OldFile>();			
 		files.stream().forEach( file -> {			
 			SimpleDateFormat format = new SimpleDateFormat("D");
 			int fileLastModified = Integer.parseInt(format.format(new Date(file.lastModified()))),
 					currentDate = Integer.parseInt(format.format(date));
 			if(currentDate < 31)
 			{
-				if(Math.abs(fileLastModified + 365) - (365 + currentDate) >= daysOld)
+				if(Math.abs(fileLastModified + (fileLastModified > currentDate ? 0 : 365)) - (365 + currentDate) >= daysOld)
 				{
-					oldFiles.add(path + "\\" + file.getName());
+					oldFiles.add(new OldFile(path, file.getName()));
+					System.out.println(oldFiles.get(oldFiles.size()-1).getFullPath());
 				}
 			}
 			else if(Math.abs(fileLastModified - currentDate) >= daysOld)
 			{
-				oldFiles.add(path + "\\" + file.getName());				
+				oldFiles.add(new OldFile(path, file.getName()));	
 			}
-		});	
+		});			
 		
 		if(!oldFileFound)
 		{			
@@ -74,13 +76,13 @@ public class CleanerT implements Runnable
 				System.exit(-1);
 			}
 		}		
+		
 		/*
-		System.out.println("line 80");
 		// Move all oldFiles to OLD folder
 		oldFiles.stream().forEach(file -> {
 			try 
 			{
-				Path p = Files.move(Paths.get(file), Paths.get(path + "\\OLD"), StandardCopyOption.REPLACE_EXISTING);
+				Path p = Files.move(Paths.get(file.getFullPath()), Paths.get(path + File.separator + "OLD" + File.separator + file.getName()), StandardCopyOption.REPLACE_EXISTING);
 				if(p == null)
 				{
 					System.err.println("Problems with moving: " + file);
@@ -90,7 +92,7 @@ public class CleanerT implements Runnable
 			{
 				e.printStackTrace();
 			}
-		});	
-		System.out.println("line 96");*/
+		});*/	
+		System.out.println("Thread finished in: " + path);
 	}
 }

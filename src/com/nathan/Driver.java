@@ -15,11 +15,12 @@ public class Driver
 		// Get List of all files in downloads folder		
 		String[] paths = {
 				"C:\\Users\\" + System.getenv("username") + "\\Downloads",
-				"D:\\Downloads"
+				"D:\\Downloads",
+				"C:\\Users\\" + System.getenv("username") + "\\Desktop" 
 		};
 		Cleaner cleaner = new Cleaner();
-		//Arrays.stream(paths).forEach( path -> cleaner.add(path) );
-		cleaner.add(paths[1]);
+		Arrays.stream(paths).forEach( path -> cleaner.add(path) );
+		//cleaner.add(paths[1]);
 		cleaner.clean(30);
 	}
 }

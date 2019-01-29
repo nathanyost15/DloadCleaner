@@ -20,7 +20,7 @@ public class Driver
 		};
 		Cleaner cleaner = new Cleaner();
 		Arrays.stream(paths).forEach( path -> cleaner.add(path) );
-		//cleaner.add(paths[1]);
+		//cleaner.add(paths[2]);
 		cleaner.clean(30);
 	}
 }

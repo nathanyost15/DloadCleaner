@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,19 +49,18 @@ public class CleanerT implements Runnable
 		
 		// Search for files that are 30 days old
 		List<OldFile> oldFiles = new ArrayList<OldFile>();			
-		files.stream().forEach( file -> {			
-			SimpleDateFormat format = new SimpleDateFormat("D");
-			int fileLastModified = Integer.parseInt(format.format(new Date(file.lastModified()))),
+		files.stream().forEach( file -> {
+			SimpleDateFormat format = new SimpleDateFormat("D");			
+			int fileLastAccessed = Integer.parseInt(format.format(new Date(this.getLastAccessTime(path + File.separator + file.getName())))),
 					currentDate = Integer.parseInt(format.format(date));
 			if(currentDate < 31)
 			{
-				if(Math.abs(fileLastModified + (fileLastModified > currentDate ? 0 : 365)) - (365 + currentDate) >= daysOld)
+				if(Math.abs(fileLastAccessed + (fileLastAccessed > currentDate ? 0 : 365) - (365 + currentDate)) >= daysOld)
 				{
 					oldFiles.add(new OldFile(path, file.getName()));
-					System.out.println(oldFiles.get(oldFiles.size()-1).getFullPath());
 				}
 			}
-			else if(Math.abs(fileLastModified - currentDate) >= daysOld)
+			else if(Math.abs(fileLastAccessed - currentDate) >= daysOld)
 			{
 				oldFiles.add(new OldFile(path, file.getName()));	
 			}
@@ -76,8 +77,7 @@ public class CleanerT implements Runnable
 				System.exit(-1);
 			}
 		}		
-		
-		
+				
 		// Move all oldFiles to OLD folder
 		oldFiles.stream().forEach(file -> {
 			try 
@@ -94,5 +94,21 @@ public class CleanerT implements Runnable
 			}
 		});
 		System.out.println("Thread finished in: " + path);
+	}
+	
+	private long getLastAccessTime(String path)
+	{
+		Path file = Paths.get(path);
+		BasicFileAttributes attrs = null;
+		try 
+		{
+			attrs = Files.readAttributes(file, BasicFileAttributes.class);
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		FileTime time = attrs.lastAccessTime();
+		return time.toMillis();
 	}
 }

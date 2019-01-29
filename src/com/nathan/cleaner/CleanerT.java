@@ -70,7 +70,7 @@ public class CleanerT implements Runnable
 		{			
 			try
 			{
-				Files.createDirectory(Paths.get(path + "\\OLD"));
+				Files.createDirectory(Paths.get(path + File.separator + "OLD"));
 			} catch(IOException e)
 			{
 				System.err.println(e.getMessage());

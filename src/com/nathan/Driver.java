@@ -18,8 +18,13 @@ public class Driver
 				"D:\\Downloads",
 				"C:\\Users\\" + System.getenv("username") + "\\Desktop" 
 		};
+		
+		String[] paths_linux = {
+				"/home/nathan/Downloads"
+		};
 		Cleaner cleaner = new Cleaner();
-		Arrays.stream(paths).forEach( path -> cleaner.add(path) );
+		//Arrays.stream(paths).forEach( path -> cleaner.add(path) );
+		Arrays.stream(paths_linux).forEach( path -> cleaner.add(path));
 		//cleaner.add(paths[2]);
 		cleaner.clean(30);
 	}

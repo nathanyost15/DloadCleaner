@@ -132,9 +132,10 @@ public class Driver extends javax.swing.JFrame
         chooser.showDialog(pathList, null);
         File f = chooser.getSelectedFile();
         if(f != null)
-        	cleaner.add(f.getAbsolutePath());        
-        
-        pathList.setListData(cleaner.getPaths());
+        {
+        	cleaner.add(f.getAbsolutePath());
+        	pathList.setListData(cleaner.getPaths());
+        }
     }      
     
     private void deletePathButtonActionPerformed(ActionEvent evt)

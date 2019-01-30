@@ -78,6 +78,12 @@ public class Driver extends javax.swing.JFrame
         });
 
         cleanButton.setText("Clean");
+        cleanButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent evt)
+        	{
+        		cleanButtonActionPerformed(evt);
+        	}
+        });
         
         javax.swing.GroupLayout cleanerPanelLayout = new javax.swing.GroupLayout(cleanerPanel);
         cleanerPanel.setLayout(cleanerPanelLayout);
@@ -151,6 +157,12 @@ public class Driver extends javax.swing.JFrame
     		paths.stream().forEach(path -> cleaner.remove(path));
     		pathList.setListData(cleaner.getPaths());
     	}    	
+    }
+    
+    private void cleanButtonActionPerformed(ActionEvent evt)
+    {
+    	if(cleaner.getPaths().length != 0)
+    		cleaner.clean(30);
     }
 
     /**

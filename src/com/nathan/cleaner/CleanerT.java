@@ -65,34 +65,36 @@ public class CleanerT implements Runnable
 				oldFiles.add(new OldFile(path, file.getName()));	
 			}
 		});			
-		
-		if(!oldFileFound)
-		{			
-			try
-			{
-				Files.createDirectory(Paths.get(path + File.separator + "OLD"));
-			} catch(IOException e)
-			{
-				System.err.println(e.getMessage());
-				System.exit(-1);
-			}
-		}		
-				
-		// Move all oldFiles to OLD folder
-		oldFiles.stream().forEach(file -> {
-			try 
-			{
-				Path p = Files.move(Paths.get(file.getFullPath()), Paths.get(path + File.separator + "OLD" + File.separator + file.getName()), StandardCopyOption.REPLACE_EXISTING);
-				if(p == null)
+		if(oldFiles.size() != 0)
+		{
+			if(!oldFileFound)
+			{			
+				try
 				{
-					System.err.println("Problems with moving: " + file);
+					Files.createDirectory(Paths.get(path + File.separator + "OLD"));
+				} catch(IOException e)
+				{
+					System.err.println(e.getMessage());
+					System.exit(-1);
 				}
-				
-			} catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
-		});
+			}		
+					
+			// Move all oldFiles to OLD folder
+			oldFiles.stream().forEach(file -> {
+				try 
+				{
+					Path p = Files.move(Paths.get(file.getFullPath()), Paths.get(path + File.separator + "OLD" + File.separator + file.getName()), StandardCopyOption.REPLACE_EXISTING);
+					if(p == null)
+					{
+						System.err.println("Problems with moving: " + file);
+					}
+					
+				} catch (IOException e) 
+				{
+					e.printStackTrace();
+				}
+			});
+		}
 		System.out.println("Thread finished in: " + path);
 	}
 	

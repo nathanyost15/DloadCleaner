@@ -6,15 +6,16 @@ public class OldFile
 {
 	private String parentPath,
 		name;
+	private File file;
 	/**
 	 * Constructs an OldFile obj.
 	 * @param path Path to a specific file/folder.
 	 * @param name Name of the specific file/folder.
 	 */
-	public OldFile(String path, String name)
+	public OldFile(String path, File file)
 	{		
 		setParentPath(path);
-		setName(name);
+		setName(file.getName());
 	}
 	
 	/**
@@ -60,5 +61,13 @@ public class OldFile
 	public String getAbsolutePath()
 	{
 		return parentPath + File.separator + name;
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
 	}
 }

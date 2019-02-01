@@ -15,6 +15,11 @@ public class Cleaner
 		date = null;
 	}
 	
+	/**
+	 * Adds a path to list of paths.
+	 * @param path String obj that represents a path on the hard disk.
+	 * @return Boolean on whether it was able to add to list or not.
+	 */
 	public boolean add(String path)
 	{
 		if(!paths.contains(path))

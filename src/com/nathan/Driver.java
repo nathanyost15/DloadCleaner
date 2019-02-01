@@ -137,12 +137,19 @@ public class Driver extends javax.swing.JFrame
         chooser.setDialogTitle("Select directory");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.setAcceptAllFileFilterUsed(false);
-        chooser.showDialog(pathList, null);
-        File f = chooser.getSelectedFile();
-        if(f != null)
+        
+        // Check to see if the user selected open or cancelled.
+        int approved = chooser.showDialog(pathList, null);
+        
+        // If user selected open then save to list.
+        if(approved == JFileChooser.APPROVE_OPTION)
         {
-        	cleaner.add(f.getAbsolutePath());
-        	pathList.setListData(cleaner.getPaths());
+	        File f = chooser.getSelectedFile();
+	        if(f != null)
+	        {
+	        	cleaner.add(f.getAbsolutePath());
+	        	pathList.setListData(cleaner.getPaths());
+	        }
         }
     }      
     

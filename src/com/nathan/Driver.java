@@ -129,6 +129,7 @@ public class Driver extends javax.swing.JFrame
 
         pack();
         this.setLocationRelativeTo(null);
+        this.setResizable(false);        
     }// </editor-fold>                        
 
     private void addPathButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              

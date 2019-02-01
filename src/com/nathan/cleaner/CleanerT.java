@@ -93,7 +93,7 @@ public class CleanerT implements Runnable
 			oldFiles.stream().forEach(file -> {
 				try 
 				{
-					Path p = Files.move(Paths.get(file.getFullPath()), Paths.get(path + File.separator + "OLD" + File.separator + file.getName()), StandardCopyOption.REPLACE_EXISTING);
+					Path p = Files.move(Paths.get(file.getAbsolutePath()), Paths.get(path + File.separator + "OLD" + File.separator + file.getName()), StandardCopyOption.REPLACE_EXISTING);
 					if(p == null)
 					{
 						System.err.println("Problems with moving: " + file);

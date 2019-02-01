@@ -19,6 +19,13 @@ public class CleanerT implements Runnable
 	private String path;
 	private Date date;
 	private int daysOld;
+	
+	/**
+	 * Constructs a new CleanerT obj. 
+	 * @param path Path that is used to execute cleanup.
+	 * @param date Date obj that represents today's date.
+	 * @param daysOld How many days old can the file be before its selected as an oldFile.
+	 */
 	public CleanerT(String path, Date date, int daysOld)
 	{		
 		this.path = path;
@@ -26,6 +33,9 @@ public class CleanerT implements Runnable
 		this.daysOld = daysOld;
 	}
 	
+	/**
+	 * Runs thread of execution.
+	 */
 	@Override
 	public void run()
 	{	
@@ -98,6 +108,11 @@ public class CleanerT implements Runnable
 		System.out.println("Thread finished in: " + path);
 	}
 	
+	/**
+	 * Gets the last access time for a given file/folder.
+	 * @param path Path to a specific file/folder.
+	 * @return Long representing access time in millisec(s).
+	 */
 	private long getLastAccessTime(String path)
 	{
 		Path file = Paths.get(path);

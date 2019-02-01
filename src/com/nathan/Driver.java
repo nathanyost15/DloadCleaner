@@ -57,6 +57,7 @@ public class Driver extends javax.swing.JFrame
         cleanButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        
 
         
         pathListPane.setViewportView(pathList);
@@ -127,6 +128,7 @@ public class Driver extends javax.swing.JFrame
         );
 
         pack();
+        this.setLocationRelativeTo(null);
     }// </editor-fold>                        
 
     private void addPathButtonActionPerformed(java.awt.event.ActionEvent evt) {                                              

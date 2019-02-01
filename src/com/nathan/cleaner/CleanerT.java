@@ -50,17 +50,10 @@ public class CleanerT implements Runnable
 		// Search for files that are 30 days old.
 		List<File> oldFiles = getOldFiles(files, daysOld);
 		
-		// Create OLD folder.
+		// Create OLD folder.		
 		if(oldFiles.size() != 0 && f == null)
 		{
-			try
-			{
-				Files.createDirectory(Paths.get(path + File.separator + "OLD"));
-			} catch(IOException e)
-			{
-				System.err.println(e.getMessage());
-				System.exit(-1);
-			}
+			createFolder(path + File.separator + "OLD");
 		}		
 		
 		// Move old files to OLD folder.
@@ -69,10 +62,22 @@ public class CleanerT implements Runnable
 		System.out.println("Thread finished in: " + path);
 	}
 	
+	private void createFolder(String string) 
+	{
+		try
+		{
+			Files.createDirectory(Paths.get(string));
+		} catch(IOException e)
+		{
+			System.err.println(e.getMessage());
+			System.exit(-1);
+		}
+	}
+
 	private void moveFiles(List<File> oldFiles) 
 	{
 		// Check if there are any oldFiles before continuing.
-		if(oldFiles.size() != 0)
+		if(oldFiles.size() == 0)
 			return;
 				
 		// Move all oldFiles to OLD folder
